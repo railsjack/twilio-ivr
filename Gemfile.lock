@@ -171,6 +171,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  bundler (>= 2.0.0)
   coffee-rails (~> 4.2)
   jbuilder (~> 2.5)
   jquery-rails
