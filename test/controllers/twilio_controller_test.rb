@@ -23,7 +23,7 @@ class TwilioControllerTest < ActionController::TestCase
   end
 
   test "should Gather something when 2 is chosen" do
-    get :menu_selection, From: "15556505813", Digits: '2'
+    get :menu_selection, params: { From: "15556505813", Digits: '2' }
     assert response.body.include? "Gather"
     assert_response :success
   end

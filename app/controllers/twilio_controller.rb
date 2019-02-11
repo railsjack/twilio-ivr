@@ -5,15 +5,16 @@ require 'sanitize'
 class TwilioController < ApplicationController
 
   def index
-    render text: "Dial Me."
+    render plain: "Dial Me."
   end
 
   # POST ivr/welcome
   def ivr_welcome
     response = Twilio::TwiML::VoiceResponse.new
     gather = Twilio::TwiML::Gather.new(num_digits: '1', action: menu_path)
-    gather.say("Thanks for calling the E T Phone Home Service. Please press 1 for
-    directions. Press 2 for a list of planets to call.", loop: 3)
+    message = "Thanks for calling the E T Phone Home Service. Please press 1 for
+    directions. Press 2 for a list of planets to call."
+    gather.say(message: message, loop: 3)
     response.append(gather)
 
     render xml: response.to_s
@@ -66,7 +67,7 @@ class TwilioController < ApplicationController
 
     response = Twilio::TwiML::VoiceResponse.new do |r|
       gather = Twilio::TwiML::Gather.new(num_digits: '1', action: planets_path)
-      gather.say(message, voice: 'alice', language: 'en-GB', loop: 3)
+      gather.say(message: message, voice: 'alice', language: 'en-GB', loop: 3)
       r.append(gather)
     end
 
@@ -77,10 +78,11 @@ class TwilioController < ApplicationController
     # Respond with some TwiML and say something.
     # Should we hangup or go back to the main menu?
     response = Twilio::TwiML::VoiceResponse.new do |r|
-      r.say(phrase, voice: 'alice', language: 'en-GB')
+      r.say(message: phrase, voice: 'alice', language: 'en-GB')
       if exit
-        r.say("Thank you for calling the ET Phone Home Service - the
-        adventurous alien's first choice in intergalactic travel.")
+        message = "Thank you for calling the ET Phone Home Service - the
+        adventurous alien's first choice in intergalactic travel."
+        r.say(message: message)
         r.hangup
       else
         r.redirect(welcome_path)
